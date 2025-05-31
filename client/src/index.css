@@ -1,0 +1,372 @@
+/* @import "tailwindcss";
+@plugin "daisyui";
+
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.home{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.img-card{
+  @apply shadow-md cursor-pointer
+}
+.det{
+  opacity: 0;
+}
+.det:hover{
+  opacity:1
+} */
+
+
+/* General styling for the whole app container */
+
+
+
+
+
+
+
+
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+/* General styling for the whole app container */
+body {
+  font-family: 'Google Sans', 'Roboto', Arial, sans-serif; /* A font stack closer to Google's */
+  background-color: #c6d6d6; /* Soft light gray background */
+  margin: 0;
+  padding: 0; /* Remove padding from body */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center vertically for the main container */
+  min-height: 100vh; /* Full viewport height */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent body scroll if content overflows, let chatbox handle it */
+}
+
+/* Main container for the chatbot component */
+.chatbot-container {
+  width: 100%;
+  max-width: 768px; /* Slightly wider for a more spacious feel */
+  background-color: #ffffff;
+  border-radius: 20px; /* More rounded corners */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+  display: flex;
+  flex-direction: column;
+  /* Key for Gemini-like height: occupy most of viewport height */
+  height: 90vh; /* Take 90% of viewport height */
+  min-height: 500px; /* Ensure a minimum height on very small screens */
+  max-height: 900px; /* Cap the max height on very large screens */
+  overflow: hidden; /* Ensures content doesn't overflow rounded corners */
+}
+
+/* Chatbot header */
+.chat-header {
+  background-color: #1b1c1c; /* Google Blue */
+  color: white;
+  padding: 20px 25px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  text-align: center;
+  font-size: 1.6em; /* Larger, more prominent title */
+  font-weight: 500; /* Medium weight */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  z-index: 10; /* Ensure header stays on top */
+}
+
+/* Message display area - THE SCROLLING PART */
+.chat-messages {
+  flex-grow: 1; /* Takes up all remaining space */
+  padding: 20px;
+  overflow-y: auto; /* THIS IS CRUCIAL FOR SCROLLING */
+  background-color: #f2f5f9; /* Lighter background for message area */
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Slightly less space between messages for compactness */
+  scroll-behavior: smooth; /* Smooth scrolling for new messages */
+}
+
+/* Individual message styling */
+.message {
+  padding: 12px 18px;
+  border-radius: 22px; /* Even more pill-shaped */
+  max-width: 80%;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+}
+
+/* User message styling */
+.message.user {
+  background-color: #e0f2f7; /* Soft blueish for user messages */
+  align-self: flex-end;
+  color: #212529;
+  border-bottom-right-radius: 8px; /* Slightly less rounded */
+}
+
+/* AI message styling */
+.message.ai {
+  background-color: #ffffff; /* White for AI messages */
+  align-self: flex-start;
+  color: #212529;
+  border-bottom-left-radius: 8px; /* Slightly less rounded */
+}
+
+/* Sender name within messages (optional, removed in some cleaner UIs) */
+/* If you want to keep them but subtly: */
+.sender-name {
+  font-size: 0.7em; /* Smaller font */
+  font-weight: 500;
+  margin-bottom: 3px;
+  opacity: 0.8; /* More visible */
+  position: absolute;
+  /* Adjust these values based on desired positioning relative to the bubble */
+  top: -15px; /* Above the bubble */
+  /* Remove left/right to let text naturally position */
+}
+
+.message.user .sender-name {
+  right: 0;
+  color: #1b1c1c; /* Blueish to match Google theme */
+}
+
+.message.ai .sender-name {
+  left: 0;
+  color: #5f6368; /* Google gray */
+}
+
+/* Message text */
+.message-text {
+  font-size: 1.05em; /* Slightly larger text */
+  line-height: 1.5;
+}
+
+/* Loading indicator for AI response */
+.message.ai.loading {
+  background-color: #e8f0fe; /* Light blue for loading */
+  color: #666;
+  font-style: italic;
+  animation: pulse 1.5s infinite ease-in-out; /* Simple pulse animation */
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Input form at the bottom */
+.chat-input-form {
+  display: flex;
+  padding: 20px 25px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  gap: 15px; /* More space between input and button */
+  align-items: center; /* Vertically align items */
+  z-index: 10; /* Ensure input form stays on top */
+}
+
+/* Input field */
+.chat-input-form input {
+  flex-grow: 1;
+  padding: 14px 20px; /* Increased padding */
+  border: 1px solid #dadce0; /* Softer border */
+  border-radius: 28px; /* More rounded */
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.chat-input-form input:focus {
+  border-color: #1b1c1c; /* Google blue on focus */
+  box-shadow: 0 0 0 0.2rem rgba(66, 133, 244, 0.25); /* Subtle glow */
+}
+
+/* Send button */
+.chat-input-form button {
+  padding: 14px 30px; /* Increased padding */
+  background-color: #1b1c1c; /* Google blue */
+  color: white;
+  border: none;
+  border-radius: 28px; /* More rounded */
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.chat-input-form button:hover {
+  background-color: #212529; /* Darker blue on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input-form button:disabled {
+  background-color: #bbdefb; /* Lighter blue when disabled */
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.8;
+  box-shadow: none;
+}
+
+/* Existing .message.ai.loading styles (ensure these are present and updated) */
+.message.ai.loading {
+  background-color: #e8f0fe; /* Light blue for loading */
+  color: #666;
+  font-style: italic;
+  /* The animation will be added here */
+  display: flex; /* Use flexbox to align dots */
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px; /* Space between dots */
+  padding: 12px 18px; /* Ensure padding is consistent */
+}
+
+/* AI Thinking Dots Animation */
+.message.ai.loading .message-text {
+  /* Hide the "Thinking..." text if you want only dots, or keep it */
+  /* display: none; */
+  margin-right: 8px; /* Space before dots if text is visible */
+}
+
+.message.ai.loading::after {
+  content: ''; /* Required for pseudo-elements */
+  display: inline-flex; /* Use inline-flex for dots container */
+  align-items: flex-end; /* Align dots to the bottom of the text line */
+  width: 30px; /* Width for the dots container */
+  height: 12px; /* Height for the dots container */
+  overflow: hidden; /* Hide overflow if dots go too high */
+}
+
+.message.ai.loading::after {
+  /* Create the three dots using background-image and animation */
+  background-image: radial-gradient(circle at 50% 50%, #666 20%, transparent 20%),
+                    radial-gradient(circle at 50% 50%, #666 20%, transparent 20%),
+                    radial-gradient(circle at 50% 50%, #666 20%, transparent 20%);
+  background-size: 8px 8px; /* Size of each dot */
+  background-repeat: no-repeat;
+  animation: typing-dots 1.4s infinite ease-in-out;
+}
+
+@keyframes typing-dots {
+  0% {
+      background-position: 0 8px, 11px 8px, 22px 8px; /* Dots start low */
+  }
+  25% {
+      background-position: 0 0px, 11px 8px, 22px 8px; /* First dot moves up */
+  }
+  50% {
+      background-position: 0 8px, 11px 0px, 22px 8px; /* Second dot moves up */
+  }
+  75% {
+      background-position: 0 8px, 11px 8px, 22px 0px; /* Third dot moves up */
+  }
+  100% {
+      background-position: 0 8px, 11px 8px, 22px 8px; /* All dots back down */
+  }
+}
+
+/* Optional: If you want to hide the "Thinking..." text and only show dots */
+/*
+.message.ai.loading .message-text {
+  display: none;
+}
+*/
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+      padding: 0;
+      align-items: flex-start; /* Align to top on small screens */
+  }
+
+  .chatbot-container {
+      margin: 0; /* No margin on small screens */
+      height: 100vh; /* Full height of viewport */
+      width: 100%;
+      max-width: none; /* No max width */
+      border-radius: 0; /* No border-radius for full screen */
+      box-shadow: none; /* No shadow */
+  }
+
+  .chat-header {
+      border-radius: 0; /* No border-radius for full screen header */
+  }
+
+  .message {
+      max-width: 90%; /* Allow messages to take more width */
+      padding: 10px 15px;
+  }
+
+  .chat-input-form {
+      flex-direction: column; /* Stack input and button vertically */
+      align-items: stretch;
+      gap: 10px;
+      padding: 15px 20px; /* Slightly less padding */
+  }
+
+  .chat-input-form button {
+      width: 100%; /* Full width button */
+  }
+}
+
+/* Add this at the end of your existing Chatbot.css */
+
+.chat-footer {
+  padding: 10px 25px;
+  background-color: #f8f9fa; /* Consistent with input area */
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.delete-history-button {
+  padding: 8px 15px;
+  background-color: #dc3545; /* Red for delete action */
+  color: white;
+  border: none;
+  border-radius: 15px; /* Slightly less rounded than main buttons */
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.delete-history-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+  transform: translateY(-1px);
+}
+
+.delete-history-button:disabled {
+  background-color: #f0a3aa; /* Lighter red when disabled */
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
+}
+
+/* Adjust media query for the new footer on small screens */
+@media (max-width: 768px) {
+  .chat-footer {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+}
+
